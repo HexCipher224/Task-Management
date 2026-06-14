@@ -1,8 +1,8 @@
-# Import functions from task_manager.task_utils package
-None
-from task_utils import add_task, mark_task_as_complete, view_pending_tasks, calculate_progress
-# Define the main function
+# main.py
+from task_manager.task_utils import add_task, mark_task_as_complete, view_pending_tasks, calculate_progress
+
 def main():
+    tasks = []
     while True:
         print("Task Management System")
         print("1. Add Task")
@@ -13,24 +13,22 @@ def main():
         choice = input("Enter your choice (1-5): ")
 
         if choice == "1":
-            print("\n--- Add a New Task ---")
-            title = input("Enter title: ")
-            description = input(" Enter description: ")
-            due_date = input("Enter due date (YYYY-MM-DD): ")
-            add_task(title, description, due_date)
-
-        elif choice == "2":
-            view_pending_tasks()
-            index_input = input("\nEnter the number of the task to complete: ")
-            mark_task_as_complete(index_input)
-
-        elif choice == "3":
-            view_pending_tasks()
-        
+            title = input("Enter task title: ")
+            description = input("Enter task description: ")
+            due_date = input("Enter task due date (YYYY-MM-DD): ")
+            priority = input("Enter task priority (low/medium/high or 1-5): ")
+            tasks = add_task(tasks, title, description, due_date, priority)
+        elif choice == "2":    
+            try:
+                index = int(input("Enter the index of the task to mark as complete: "))
+                tasks = mark_task_as_complete(tasks, index)
+            except ValueError:
+                print("Invalid index. Please enter a numeric task index.")
+        elif choice == "3":    
+            view_pending_tasks(tasks)
         elif choice == "4":
-            current_progress = calculate_progress()
-            print(f"\nYour current progress: {current_progress:.1f}% complete.")
-
+            progress = calculate_progress(tasks)
+            print(f"Progress: {progress:.2f}%")
         elif choice == "5":
             print("Exiting the program...")
             break
